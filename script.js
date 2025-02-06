@@ -1,20 +1,34 @@
-// JavaScript for Search Functionality and Back to Top Button
-document.addEventListener("DOMContentLoaded", function() {
-    const searchInput = document.querySelector('.search-input');
-    const searchForm = document.querySelector('.navSearch form');
+document.addEventListener("DOMContentLoaded", () => {
+    const cartCount = document.getElementById("cart-count");
+    const addToCartButtons = document.querySelectorAll(".add-to-cart");
+    const searchBox = document.getElementById("search");
+    const scrollToTop = document.getElementById("scrollToTop");
 
-    // Redirect to search results on form submission
-    searchForm.addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent default form submission
-        const query = searchInput.value.trim();
-        if (query) {
-            window.location.href = `https://www.amazon.in/s?k=${encodeURIComponent(query)}`;
-        }
+    let cartItems = 0;
+
+    // Add to Cart Functionality
+    addToCartButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            cartItems++;
+            cartCount.textContent = cartItems;
+        });
     });
 
-    // Back to Top Functionality
-    const backToTopButton = document.querySelector('.back_to_top');
-    backToTopButton.addEventListener('click', function() {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    // Search Functionality
+    searchBox.addEventListener("input", (e) => {
+        const searchText = e.target.value.toLowerCase();
+        document.querySelectorAll(".product-card").forEach(card => {
+            const name = card.dataset.name.toLowerCase();
+            card.style.display = name.includes(searchText) ? "block" : "none";
+        });
+    });
+
+    // Scroll to Top Button
+    window.addEventListener("scroll", () => {
+        scrollToTop.style.display = window.scrollY > 200 ? "block" : "none";
+    });
+
+    scrollToTop.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
     });
 });
